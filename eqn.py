@@ -70,13 +70,13 @@ def parse_equation(equation):
             if operator == "neg":
                 #there is a neg operator
                 return "(" + operator_dict.get(operator) + \
-                       equation[4:len(equation)-1] + \
+                       parse_equation(equation[4:len(equation)-1]) + \
                        ")"
             elif operator == "sin" or operator == "cos":
                 #there is an operator, like sin, cos...
                 return operator_dict.get(operator) + \
                     "(" + \
-                    equation[4:len(equation)-1] + \
+                    parse_equation(equation[4:len(equation)-1]) + \
                     ")"
             elif len(equation) == 1:
                 #there is no operator, just a variable
@@ -122,6 +122,16 @@ class Test(unittest.TestCase):
     def test_6_complex_expression_2(self):
         eqn = "add(x, mul(add(x, mul(add(x, mul(x, add(x, mul(x, x)))), add(x, mul(x, x)))), x))"
         self.assertEqual("(x+((x+((x+(x*(x+(x*x))))*(x+(x*x))))*x))", parse_equation(eqn))
+
+    def test_7_complex_expression_3(self):
+        eqn = "neg(sin(add(x, x)))"
+        parse_equation(eqn)
+        self.assertEqual("(-sin((x+x)))", parse_equation(eqn))
+
+    def test_8_complex_expression_4(self):
+        eqn = "add(x, mul(add(mul(x, x), add(add(add(sin(x), x), neg(sin(add(x, x)))), x)), x))"
+        parse_equation(eqn)
+        self.assertEqual("(x+(((x*x)+(((sin(x)+x)+(-sin((x+x))))+x))*x))", parse_equation(eqn))
 
 if __name__ == '__main__':
     unittest.main()
