@@ -61,6 +61,7 @@ class Evo():
 
     def print_evo(self):
         """Prints the settings from the dictionary."""
+        print "Evolution settings (" + self.get_hash(8) + "):"
         print (" CXPB: \t\t" + str(self.evo['CXPB']) +
                "\t(crossover probability)")
         print (" MUTPB: \t" + str(self.evo['MUTPB']) +
@@ -76,6 +77,7 @@ class Evo():
                "\t(abort after this many identical best fitnesses)")
         print (" SEED: \t\t\t\t\t" + str(self.evo['SEED']) +
                "\t(randomization seed)")
+        print self.get_limitation_rules()[1]
 
     def get_limitation_rules(self):
         """Creates a limitation function that respects either a
