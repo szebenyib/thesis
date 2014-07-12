@@ -35,7 +35,7 @@ class Evo():
         """String representation."""
         return str(self.evo)
 
-    def set_key(self, key, value):
+    def set(self, key, value):
         """Sets a key to a certain value."""
         if key in self.evo:
             self.evo[key] = value
@@ -43,7 +43,7 @@ class Evo():
         else:
             raise Exception("Unknown key: " + str(key))
 
-    def get_key(self, key):
+    def get(self, key):
         """Gets a key-value pair from the dictionary."""
         if key in self.evo:
             return self.evo[key]
@@ -75,7 +75,7 @@ class Evo():
         print (" PATIENCE: \t\t\t\t" + str(self.evo['PATIENCE']) +
                "\t(abort after this many identical best fitnesses)")
         print (" SEED: \t\t\t\t\t" + str(self.evo['SEED']) +
-               "\t(randomization seed)\n")
+               "\t(randomization seed)")
 
     def get_limitation_rules(self):
         """Creates a limitation function that respects either a
@@ -84,41 +84,41 @@ class Evo():
 
         %:returns a tuple of a limitaion function and a string representation
         of what it does"""
-        if self.get_key('NGEN') != 0 and self.get_key('PATIENCE') != 0:
+        if self.get('NGEN') != 0 and self.get('PATIENCE') != 0:
             msg = ("Mode: Generation and improvement limitations " +
-                   "are both active.")
+                   "are both active.\n")
 
             def conditions(generation, last_improvement_at):
-                if (generation < self.get_key('NGEN') + 1) is not True:
+                if (generation < self.get('NGEN') + 1) is not True:
                     print ("Reached generation limitation of " +
-                           str(self.get_key('NGEN')) + ".")
-                if ((generation - last_improvement_at) <= self.get_key(
+                           str(self.get('NGEN')) + ".")
+                if ((generation - last_improvement_at) <= self.get(
                         'PATIENCE')) is not True:
                     print ("Reached improvement limitation of " +
-                           str(self.get_key('PATIENCE')) + ".")
-                return (generation < self.get_key('NGEN') + 1
+                           str(self.get('PATIENCE')) + ".")
+                return (generation < self.get('NGEN') + 1
                         and (generation - last_improvement_at) <=
-                        self.get_key('PATIENCE'))
-        elif self.get_key('NGEN') != 0:
-            msg = "Mode: Only generation limitation is active."
+                        self.get('PATIENCE'))
+        elif self.get('NGEN') != 0:
+            msg = "Mode: Only generation limitation is active.\n"
 
             def conditions(generation, last_improvement_at):
-                if (generation < self.get_key('NGEN') + 1) is not True:
+                if (generation < self.get('NGEN') + 1) is not True:
                     print ("Reached generation limitation of " +
-                           str(self.get_key('NGEN')) + ".")
-                return generation < self.get_key('NGEN') + 1
-        elif self.get_key('PATIENCE') != 0:
-            msg = "Mode: Only improvement limitation is active."
+                           str(self.get('NGEN')) + ".")
+                return generation < self.get('NGEN') + 1
+        elif self.get('PATIENCE') != 0:
+            msg = "Mode: Only improvement limitation is active.\n"
 
             def conditions(generation, last_improvement_at):
-                if ((generation - last_improvement_at) <= self.get_key(
+                if ((generation - last_improvement_at) <= self.get(
                         'PATIENCE')) is not True:
                     print ("Reached improvement limitation of " +
-                           str(self.get_key('PATIENCE')) + ".")
-                return (generation - last_improvement_at) <= self.get_key(
+                           str(self.get('PATIENCE')) + ".")
+                return (generation - last_improvement_at) <= self.get(
                     'PATIENCE')
         else:
-            msg = "Mode: No limitation is active -> please set one."
+            msg = "Mode: No limitation is active -> please set one.\n"
 
             def conditions(generation, last_improvement_at):
                 return False
@@ -146,22 +146,22 @@ class Test(unittest.TestCase):
 
     def test_4_get_good_key(self):
         evoset = Evo()
-        self.assertTrue(evoset.get_key('CXPB') == 0)
+        self.assertTrue(evoset.get('CXPB') == 0)
 
     def test_5_get_bad_key(self):
         evoset = Evo()
         with self.assertRaises(Exception):
-            evoset.get_key('CXP')
+            evoset.get('CXP')
 
     def test_6_set_good_key(self):
         evoset = Evo()
-        evoset.set_key('CXPB', 0.5)
-        self.assertTrue(evoset.get_key('CXPB') == 0.5)
+        evoset.set('CXPB', 0.5)
+        self.assertTrue(evoset.get('CXPB') == 0.5)
 
     def test_7_set_bad_key(self):
         evoset = Evo()
         with self.assertRaises(Exception):
-            evoset.set_key('CXP', 0.5)
+            evoset.set('CXP', 0.5)
 
     def test_8_get_hash_unlimited(self):
         evoset = Evo()
@@ -181,20 +181,20 @@ class Test(unittest.TestCase):
     def test_11_get_limitation_rules(self):
         evoset = Evo()
         self.assertEquals(evoset.get_limitation_rules()[1],
-                          "Mode: No limitation is active -> please set one.")
-        evoset.set_key('NGEN', 10)
-        evoset.set_key('PATIENCE', 0)
+                          "Mode: No limitation is active -> please set one.\n")
+        evoset.set('NGEN', 10)
+        evoset.set('PATIENCE', 0)
         self.assertEquals(evoset.get_limitation_rules()[1],
-                          "Mode: Only generation limitation is active.")
-        evoset.set_key('NGEN', 0)
-        evoset.set_key('PATIENCE', 10)
+                          "Mode: Only generation limitation is active.\n")
+        evoset.set('NGEN', 0)
+        evoset.set('PATIENCE', 10)
         self.assertEquals(evoset.get_limitation_rules()[1],
-                          "Mode: Only improvement limitation is active.")
-        evoset.set_key('NGEN', 10)
-        evoset.set_key('PATIENCE', 10)
+                          "Mode: Only improvement limitation is active.\n")
+        evoset.set('NGEN', 10)
+        evoset.set('PATIENCE', 10)
         self.assertEquals(evoset.get_limitation_rules()[1],
                           ("Mode: Generation and improvement limitations " +
-                          "are both active."))
+                          "are both active.\n"))
 
 
 if __name__ == '__main__':
