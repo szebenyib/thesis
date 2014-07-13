@@ -73,9 +73,9 @@ class Evo():
         print (" FREQ_OF_CHECKPOINTS: \t" +
                str(self.evo['FREQ_OF_CHECKPOINTS']) +
                "\t(save after this many generations)")
-        print (" PATIENCE: \t\t\t\t" + str(self.evo['PATIENCE']) +
+        print (" PATIENCE: \t\t" + str(self.evo['PATIENCE']) +
                "\t(abort after this many identical best fitnesses)")
-        print (" SEED: \t\t\t\t\t" + str(self.evo['SEED']) +
+        print (" SEED: \t\t\t" + str(self.evo['SEED']) +
                "\t(randomization seed)")
         print self.get_limitation_rules()[1]
 
