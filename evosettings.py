@@ -21,13 +21,11 @@ class Evo():
                     'N': 0,  # Number of individuals in population
                     'FREQ_OF_CHECKPOINTS': 0,  # How often to save
                     'PATIENCE': 0,  # How many generations to wait for improvem.
-                    'SEED': 0}  # Randomization setting
+                    'SEED': 0,
+                    'CUTOFF': 0.5}  # Randomization setting
         if initial_dictionary:
             for k in initial_dictionary:
-                if k in self.evo:
-                    self.evo[k] = initial_dictionary[k]
-                else:
-                    raise Exception("Unknown key: " + str(k))
+                self.evo[k] = initial_dictionary[k]
         self.evo = OrderedDict(sorted(self.evo.items(), key=lambda t: t[0]))
         self.evo_hash = hashlib.md5(str(self.evo)).hexdigest()
 
